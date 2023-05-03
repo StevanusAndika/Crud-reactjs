@@ -1,0 +1,91 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Contoh ReactJS sederhana</title>
+
+  <!-- ReactJS CDN -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+
+  <!-- Babel CDN -->
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+  <style>
+.todo-app {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.todo-input {
+  padding: 10px;
+  border:1px solid #ccc;
+border-radius: 5px;
+margin-right: 10px;
+}
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    /* Ini adalah definisi komponen React dengan nama Hello. Komponen ini menerima props berupa nama yang akan ditampilkan pada halaman web. */
+
+    function List(props) {
+      return (
+        <ul>
+        {
+          props.items.map((item, index) =>
+            <li key={index}>{item}</li>
+          )
+        }
+        </ul>
+      );
+    }
+
+    class Hello extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          todoItem: '',
+          items: []
+        };
+      }
+
+      handleSubmit = (event) => {
+        event.preventDefault();
+        this.setState({
+          items: [...this.state.items, this.state.todoItem],
+          todoItem: ''
+        });
+      }
+
+      handleChange = (event) => {
+        this.setState({
+          todoItem: event.target.value
+        })
+      }
+
+      render() {
+        return (
+      <div className="todo-app">
+    <h1>Form {this.props.name}</h1>
+            <form onSubmit={this.handleSubmit}>
+<input type="text" value={this.state.todoItem} onChange={this.handleChange} className="todo-input" />
+              <button type="submit">Add</button>
+            </form>
+            <List items={this.state.items}/>
+          </div>
+        );
+      }
+    }
+
+    /* Ini adalah metode yang menghubungkan komponen React dengan elemen HTML pada halaman web. Metode ini menerima dua parameter, yaitu komponen React dan elemen HTML tujuan yang ditemukan melalui ID. Dalam contoh ini, elemen HTML tujuan adalah <div> dengan ID "root", dan komponen React adalah Hello yang diberi properti name dengan nilai "Stevanus". */
+    ReactDOM.render(
+      <Hello name="kegiatan" />,
+      document.getElementById('root')
+    );
+  </script>
+</body>
+</html>

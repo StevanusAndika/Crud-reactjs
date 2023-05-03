@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CRUD todolist Reactjs</title>
+
+    <!-- ReactJS CDN -->
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+
+    <!-- Babel CDN -->
+    <script src="js/babel.min.js"></script>
+
+    <style>
+      .todo-app {
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .todo-input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+
+      .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+        text-align: center;
+        z-index: 1;
+      }
+
+      .popup-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      .popup-buttons button {
+        margin: 0 10px;
+      }
+      li{
+        margin:10px;
+        
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      function List(props) {
+        return (
+          <ul>
+            {props.items.map((item, index) => (
+              <li key={index}>
+                {item}
+                <button onClick={() => props.handleEdit(index)}>Edit</button>
+                
+             
+                <button onClick={() => props.handleDelete(index)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        );
+      }
+
+      class Hello extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            todoItem: "",
+            items: [],
+            showPopup: true,
+            showConfirmationPopup: false,
+            editItem: "",
+            editIndex: -1,
+          };
+        }
+
+        handleSubmit = (event) => {
+          event.preventDefault();
+          if (this.state.editIndex === -1) {
+            // Add new item
+            this.setState({
+              items: [...this.state.items, this.state.todoItem],
+              todoItem: "",
+              showConfirmationPopup: true,
+            });
+          } else {
+            // Update existing item
+            const items = [...this.state.items];
+            items[this.state.editIndex] = this.state.todoItem;
+            this.setState({
+              items,
+              todoItem: "",
+              editItem: "",
+              editIndex: -1,
+              showConfirmationPopup: true,
+            });
+          }
+        };
+
+        handleChange = (event) => {
+          this.setState({
+            todoItem: event.target.value,
+          });
+        };
+
+        handleEdit = (index) => {
+          this.setState({
+            todoItem: this.state.items[index],
+            editItem: this.state.items[index],
+            editIndex: index,
+          });
+        };
+
+        handleDelete = (index) => {
+          const items = [...this.state.items];
+          items.splice(index, 1);
+          this.setState({
+            items,
+          });
+        };
+
+        render() {
+          return (
+            <div className="todo-app">
+              {this.state.showPopup && (
+                <div className="popup">
+                  <p>Silahkan isi kegiatan anda hari ini</p>
+                  <form onSubmit={this.handleSubmit}>
+                    <input
+                      type="text"
+                      value={this.state.todoItem}
+                      onChange={this.handleChange}
+                      className="todo-input"
+                    />
+                    <button type="submit">
+                      {this.state.editIndex === -1 ? "Add" : "Update"}
+                    </button>
+                  </form>
+                </div>
+              )}
+
+              <div>
+                <h1>Jadwal {this.props.name}</h1>
+                <List
+                  items={this.state.items}
+                  handleEdit={this.handleEdit}
+                  handleDelete={this.handleDelete}
+                />
+               
+              </div>
+            </div>
+
+          );
+        }
+      }
+
+      ReactDOM.render(<Hello name="kegiatan" />, document.getElementById("root"));
+    </script>
+    <script>
+      alert('kamu bingung mau ngapain hari ini?? yuk list kegiatan mu disini')
+    </script>
+  </body>
+</html>
+

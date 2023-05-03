@@ -1,0 +1,165 @@
+
+
+
+<!--salah 2-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contoh ReactJS sederhana</title>
+<!-- ReactJS CDN -->
+<script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+
+<!-- Babel CDN -->
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+<style>
+  .todo-app {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .todo-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    z-index: 1;
+  }
+
+  .popup-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .popup-buttons button {
+    margin: 0 10px;
+  }
+</style>
+</head>
+  <body>
+    <div id="root"></div>
+<script type="text/babel">
+  function List(props) {
+    return (
+      <ul>
+        {props.items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    );
+  }
+
+  class Hello extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        todoItem: "",
+        items: [],
+        showPopup: true,
+      };
+    }
+
+    handleSubmit = (event) => {
+      event.preventDefault();
+      this.setState({
+        items: [...this.state.items, this.state.todoItem],
+        todoItem: "",
+      });
+    };
+
+    handleChange = (event) => {
+      this.setState({
+        todoItem: event.target.value,
+      });
+    };
+
+    handlePopupAnswer = (answer) => {
+      this.setState({ showPopup: false });
+
+      if (answer === "yes") {
+        this.setState({ showPopup: true });
+      } else {
+window.location.reload();
+      }
+    };
+
+    render() {
+      return (
+        <div className="todo-app">
+          {this.state.showPopup && (
+            <div className="popup">
+              <p>Silahkan isi kegiatan anda hari ini</p>
+              <form onSubmit={this.handleSubmit}>
+                <input
+                  type="text"
+                  value={this.state.todoItem}
+                  onChange={this.handleChange}
+                  className="todo-input"
+                />
+                <button type="submit">Add</button>
+              </form>
+            </div>
+          )}
+          <h1>Form {this.props.name}</h1>
+          <List items={this.state.items} />
+{this.state.items.length > 0 && (
+<div className="popup">
+  <p>Mau isi data lagi?</p>
+  <div className="popup-buttons">
+    <button onClick={() => this.handlePopupAnswer("yes")}>
+      Yes
+    </button>
+    <button onClick={() => this.handlePopupAnswer("no")}>
+      No
+    </button>
+  </div>
+</div>
+
+)}
+
+       );
+      }
+    }
+ReactDOM.render(
+  <Hello />,
+  document.getElementById('root')
+);
+
+</script>
+
+</body>
+</html>
+
+
+handlePopupAnswer = (answer) => {
+          this.setState({ showPopup: false });
+
+          if (answer === "yes") {
+            this.setState({ showPopup: true,items: [...this.state.items, this.state.todoItem],
+            todoItem: "",
+              
+            });
+          } else {
+            window.location.reload();
+          }
+        };
+this.setState({
+            items: [...this.state.items, this.state.todoItem],
+            todoItem: "",
+        
